@@ -393,7 +393,7 @@ const HomePage = () => {
 
       {showDetail && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-900/60 px-4 backdrop-blur-sm">
-          <div className="w-full max-w-3xl animate-in fade-in zoom-in overflow-hidden rounded-3xl border-2 border-stone-200 bg-white shadow-2xl">
+          <div className="w-full max-w-3xl max-h-[90vh] animate-in fade-in zoom-in overflow-hidden rounded-3xl border-2 border-stone-200 bg-white shadow-2xl">
             <div className="border-b-2 border-stone-100 bg-gradient-to-r from-amber-50 via-white to-rose-50 px-6 py-5">
               <div className="flex items-center justify-between">
                 <div>
@@ -417,7 +417,7 @@ const HomePage = () => {
                   <LoaderIcon />
                 </div>
               ) : detailSweet ? (
-                <div className="grid gap-6 lg:grid-cols-2">
+                <div className="grid max-h-[70vh] gap-6 overflow-y-auto pr-1 lg:grid-cols-2">
                   <div className="space-y-4">
                     <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-100 to-rose-100 px-3 py-1 shadow-sm">
                       <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber-600" />
@@ -513,7 +513,7 @@ const HomePage = () => {
 
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-900/60 px-4 backdrop-blur-sm">
-          <div className="w-full max-w-2xl animate-in fade-in zoom-in overflow-hidden rounded-3xl border-2 border-stone-200 bg-white shadow-2xl">
+          <div className="w-full max-w-2xl max-h-[90vh] animate-in fade-in zoom-in overflow-hidden rounded-3xl border-2 border-stone-200 bg-white shadow-2xl">
             <div className="border-b-2 border-stone-100 bg-gradient-to-r from-amber-50 via-white to-rose-50 px-6 py-5">
               <div className="flex items-center justify-between">
                 <div>
@@ -539,7 +539,7 @@ const HomePage = () => {
             </div>
 
             <form className="p-6" onSubmit={handleFormSubmit}>
-              <div className="space-y-5">
+              <div className="space-y-5 max-h-[70vh] overflow-y-auto pr-2">
                 <div>
                   <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">
                     Sweet Name
