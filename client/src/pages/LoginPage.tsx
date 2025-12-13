@@ -3,6 +3,7 @@ import { type FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 import { LockIcon, LoginIcon, MailIcon, RegisterIcon, SmallLoaderIcon } from "../assets/icons";
+import { Sparkle, CupcakeIcon, LollipopIcon, DonutPattern } from "../components/Decorations";
 
 const LoginPage = () => {
   const { login, register, loading } = useAuth();
@@ -39,19 +40,33 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-amber-50 via-white to-rose-50 px-4 py-12">
-      <div className="w-full max-w-md">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-amber-50 via-white to-rose-50 px-4 py-12">
+      <DonutPattern />
+
+      <div className="absolute left-10 top-20 opacity-10">
+        <CupcakeIcon className="h-32 w-32 text-rose-400" />
+      </div>
+      <div className="absolute bottom-20 right-10 opacity-10">
+        <LollipopIcon className="h-28 w-28 text-amber-400" />
+      </div>
+
+      <Sparkle delay="0s" left="10%" top="15%" />
+      <Sparkle delay="1s" left="85%" top="25%" />
+      <Sparkle delay="2s" left="15%" top="70%" />
+      <Sparkle delay="1.5s" left="90%" top="60%" />
+
+      <div className="relative w-full max-w-md animate-bounce-in">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-rose-400 to-amber-400 shadow-2xl shadow-rose-300/50">
+          <div className="mx-auto mb-4 flex h-16 w-16 animate-float items-center justify-center rounded-2xl bg-gradient-to-br from-rose-400 to-amber-400 shadow-2xl shadow-rose-300/50">
             <LoginIcon />
           </div>
-          <h1 className="bg-gradient-to-r from-rose-600 to-amber-600 bg-clip-text text-4xl font-black text-transparent">
+          <h1 className="bg-gradient-to-r from-rose-600 via-pink-600 to-amber-600 bg-clip-text text-4xl font-black text-transparent">
             Sweet Shop
           </h1>
           <p className="mt-2 text-sm font-medium text-stone-600">Delicious Treats Management</p>
         </div>
 
-        <div className="overflow-hidden rounded-3xl border-2 border-stone-200 bg-white shadow-2xl shadow-stone-200/50">
+        <div className="overflow-hidden rounded-3xl border-2 border-stone-200 bg-white shadow-2xl shadow-stone-200/50 transition-all duration-300 hover:shadow-3xl">
           <div className="border-b-2 border-stone-100 bg-gradient-to-r from-amber-50 via-white to-rose-50 px-8 py-6">
             <h2 className="text-2xl font-bold text-stone-900">{mode === "login" ? "Welcome Back" : "Create Account"}</h2>
             <p className="mt-1 text-sm text-stone-600">

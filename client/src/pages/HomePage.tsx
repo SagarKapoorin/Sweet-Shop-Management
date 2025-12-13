@@ -7,6 +7,7 @@ import SweetCard from "../components/SweetCard";
 import { useAuth } from "../context/AuthContext";
 import { CloseIcon, LoaderIcon, SearchIcon } from "../assets/icons";
 import { type Sweet, type SweetPayload } from "../types/types";
+import { Sparkle, CupcakeIcon, LollipopIcon, DonutPattern } from "../components/Decorations";
 
 const categories = ["Chocolate", "Candy", "Pastry", "Traditional", "Other"];
 
@@ -149,23 +150,55 @@ const HomePage = () => {
   const filteredSweets = sweets;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-rose-50">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-amber-50 via-white to-rose-50">
+      <DonutPattern />
       <Navbar onOpenAdmin={() => setShowForm(true)} />
 
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mb-8 text-center">
-          <h1 className="bg-gradient-to-r from-rose-600 via-amber-600 to-rose-600 bg-clip-text text-4xl font-black text-transparent sm:text-5xl">
-            Discover Sweet Delights
-          </h1>
-          <p className="mt-3 text-base text-stone-600 sm:text-lg">
-            Explore our delicious collection of treats and sweets
-          </p>
+      <main className="relative mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <div className="relative mb-12 overflow-hidden rounded-3xl bg-gradient-to-r from-rose-100 via-amber-50 to-pink-100 px-8 py-12 text-center shadow-2xl">
+          <div className="absolute left-10 top-10 opacity-20">
+            <CupcakeIcon className="h-16 w-16 text-rose-400" />
+          </div>
+          <div className="absolute bottom-10 right-10 opacity-20">
+            <LollipopIcon className="h-16 w-16 text-amber-400" />
+          </div>
+
+          <Sparkle delay="0s" left="15%" top="20%" />
+          <Sparkle delay="1s" left="85%" top="30%" />
+          <Sparkle delay="2s" left="50%" top="10%" />
+          <Sparkle delay="1.5s" left="25%" top="70%" />
+          <Sparkle delay="0.5s" left="75%" top="60%" />
+
+          <div className="relative animate-bounce-in">
+            <h1 className="bg-gradient-to-r from-rose-600 via-pink-600 to-amber-600 bg-clip-text text-4xl font-black text-transparent sm:text-6xl">
+              Discover Sweet Delights
+            </h1>
+            <p className="mx-auto mt-4 max-w-2xl text-base font-medium text-stone-700 sm:text-lg">
+              Indulge in our handcrafted collection of premium sweets, treats, and confections
+            </p>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+              <div className="flex items-center gap-2 rounded-full bg-white/80 px-4 py-2 shadow-sm backdrop-blur">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-500" />
+                <span className="text-sm font-semibold text-stone-700">Fresh Daily</span>
+              </div>
+              <div className="flex items-center gap-2 rounded-full bg-white/80 px-4 py-2 shadow-sm backdrop-blur">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-amber-500" />
+                <span className="text-sm font-semibold text-stone-700">Premium Quality</span>
+              </div>
+              <div className="flex items-center gap-2 rounded-full bg-white/80 px-4 py-2 shadow-sm backdrop-blur">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-rose-500" />
+                <span className="text-sm font-semibold text-stone-700">Artisan Made</span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className="mb-8 overflow-hidden rounded-2xl border-2 border-stone-200 bg-white shadow-xl shadow-stone-200/50">
+        <div className="mb-8 overflow-hidden rounded-2xl border-2 border-stone-200 bg-white shadow-xl shadow-stone-200/50 transition-all duration-300 hover:shadow-2xl">
           <div className="border-b-2 border-stone-100 bg-gradient-to-r from-amber-50 via-white to-rose-50 px-5 py-4">
             <h2 className="flex items-center gap-2 text-lg font-bold text-stone-900">
-              <SearchIcon />
+              <div className="rounded-lg bg-gradient-to-br from-rose-400 to-amber-400 p-2 shadow-lg">
+                <SearchIcon />
+              </div>
               Filter & Search
             </h2>
           </div>
@@ -236,9 +269,13 @@ const HomePage = () => {
               <div className="flex items-end sm:col-span-2">
                 <button
                   onClick={loadSweets}
-                  className="w-full rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-rose-200/50 transition-all hover:scale-105 hover:shadow-xl hover:shadow-rose-300/50"
+                  className="group relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-rose-500 via-pink-500 to-amber-500 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-rose-200/50 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-rose-300/50"
                 >
-                  Apply Filters
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-500 via-rose-500 to-pink-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  <span className="relative flex items-center justify-center gap-2">
+                    <SearchIcon />
+                    Apply Filters
+                  </span>
                 </button>
               </div>
             </div>
@@ -260,24 +297,29 @@ const HomePage = () => {
               </p>
             </div>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {filteredSweets.map((sweet) => (
-                <SweetCard
+              {filteredSweets.map((sweet, index) => (
+                <div
                   key={sweet.id}
-                  sweet={sweet}
-                  role={user?.role}
-                  onPurchase={openPurchase}
-                  onEdit={openEdit}
-                  onDelete={handleDelete}
-                />
+                  className="animate-slide-up"
+                  style={{ animationDelay: `${index * 0.1}s`, animationFillMode: "both" }}
+                >
+                  <SweetCard
+                    sweet={sweet}
+                    role={user?.role}
+                    onPurchase={openPurchase}
+                    onEdit={openEdit}
+                    onDelete={handleDelete}
+                  />
+                </div>
               ))}
             </div>
             {filteredSweets.length === 0 && (
-              <div className="flex min-h-[400px] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-stone-300 bg-stone-50 p-12 text-center">
-                <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-stone-200">
+              <div className="animate-fade-in flex min-h-[400px] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-stone-300 bg-gradient-to-br from-stone-50 to-amber-50/30 p-12 text-center">
+                <div className="mb-4 flex h-20 w-20 animate-pulse items-center justify-center rounded-full bg-gradient-to-br from-amber-200 to-rose-200 shadow-lg">
                   <SearchIcon />
                 </div>
-                <h3 className="mb-2 text-xl font-bold text-stone-900">No sweets found</h3>
-                <p className="text-sm text-stone-600">Try adjusting your filters or search terms</p>
+                <h3 className="mb-2 bg-gradient-to-r from-rose-600 to-amber-600 bg-clip-text text-xl font-bold text-transparent">No sweets found</h3>
+                <p className="text-sm font-medium text-stone-600">Try adjusting your filters or search terms</p>
               </div>
             )}
           </>
