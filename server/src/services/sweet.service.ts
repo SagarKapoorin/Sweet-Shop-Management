@@ -85,6 +85,7 @@ const getSweets = async (): Promise<SweetResponse[]> => {
 };
 
 const searchSweets = async (query: SearchInput): Promise<SweetResponse[]> => {
+  try {
   // console.log('Search Query:', query);
   const key = buildSearchKey(query);
   const atlasSearchIndex = 'sweet-search';
@@ -106,7 +107,7 @@ const searchSweets = async (query: SearchInput): Promise<SweetResponse[]> => {
       text: {
         query: query.category,
         path: 'category',
-        fuzzy: { maxEdits: 3, prefixLength: 0, maxExpansions: 50 }
+        fuzzy: { maxEdits: 2, prefixLength: 0, maxExpansions: 50 }
       }
     });
   }
@@ -128,7 +129,7 @@ const searchSweets = async (query: SearchInput): Promise<SweetResponse[]> => {
       text: {
         query: query.name,
         path: ['name', 'category', 'description'],
-        fuzzy: { maxEdits: 3, prefixLength: 0, maxExpansions: 50 }
+        fuzzy: { maxEdits: 2, prefixLength: 0, maxExpansions: 50 }
       }
     });
   } else {
@@ -161,6 +162,10 @@ const searchSweets = async (query: SearchInput): Promise<SweetResponse[]> => {
   }));
   await cacheList(key, mapped);
   return mapped;
+}catch (error) {
+  console.error('Error in searchSweets:', error);
+  throw error;
+}
 };
 
 const getSweetById = async (id: string): Promise<SweetResponse> => {
