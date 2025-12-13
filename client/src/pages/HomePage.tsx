@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import api from '../api/axios';
 import Navbar from '../components/Navbar';
 import SweetCard from '../components/SweetCard';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { BagIcon, CloseIcon, LoaderIcon, SearchIcon } from '../assets/icons';
 import { type Sweet, type SweetPayload } from '../types/types';
 import { Sparkle, CupcakeIcon, LollipopIcon, DonutPattern } from '../components/Decorations';

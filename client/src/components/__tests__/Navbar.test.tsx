@@ -9,8 +9,8 @@ import { type User } from '../../types/types';
 const mockLogout = vi.fn();
 let mockUser: User | null = null;
 
-vi.mock('../../context/AuthContext', () => ({
-  useAuth: () => ({ user: mockUser, logout: mockLogout }),
+vi.mock('../../hooks/useAuth', () => ({
+  useAuth: () => ({ user: mockUser, logout: mockLogout })
 }));
 
 const renderNavbar = (uiProps?: ComponentProps<typeof Navbar>) =>

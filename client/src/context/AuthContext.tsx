@@ -1,25 +1,10 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
+import { AuthContext, type AuthContextValue } from './authShared';
 import { type User } from '../types/types';
 
-type AuthContextValue = {
-  user: User | null;
-  token: string | null;
-  loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (
-    name: string,
-    email: string,
-    password: string,
-    role?: 'user' | 'admin'
-  ) => Promise<void>;
-  logout: () => void;
-};
-
-const AuthContext = createContext<AuthContextValue | undefined>(undefined);
-
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -42,7 +27,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(nextUser);
   };
 
-  const login = async (email: string, password: string) => {
+  const login: AuthContextValue['login'] = async (email, password) => {
     setLoading(true);
     try {
       const res = await api.post('/auth/login', { email, password });
@@ -53,12 +38,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const register = async (
-    name: string,
-    email: string,
-    password: string,
-    role?: 'user' | 'admin'
-  ) => {
+  const register: AuthContextValue['register'] = async (name, email, password, role) => {
     setLoading(true);
     try {
       const res = await api.post('/auth/register', { name, email, password, role });
@@ -83,10 +63,4 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
-
-export const useAuth = () => {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used within AuthProvider');
-  return ctx;
 };
