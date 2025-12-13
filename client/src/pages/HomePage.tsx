@@ -481,8 +481,8 @@ const HomePage = () => {
 
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-900/60 px-4 backdrop-blur-sm">
-          <div className="w-full max-w-2xl max-h-[90vh] animate-in fade-in zoom-in overflow-hidden rounded-3xl border-2 border-stone-200 bg-white shadow-2xl">
-            <div className="border-b-2 border-stone-100 bg-gradient-to-r from-amber-50 via-white to-rose-50 px-6 py-5">
+          <div className="w-full max-w-2xl max-h-[90vh] animate-in fade-in zoom-in overflow-hidden rounded-3xl border-2 border-stone-200 bg-white shadow-2xl flex flex-col">
+            <div className="shrink-0 border-b-2 border-stone-100 bg-gradient-to-r from-amber-50 via-white to-rose-50 px-6 py-5">
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-2xl font-bold text-stone-900">
@@ -506,8 +506,8 @@ const HomePage = () => {
               </div>
             </div>
 
-            <form className="p-6" onSubmit={handleFormSubmit}>
-              <div className="space-y-5 max-h-[70vh] overflow-y-auto pr-2">
+            <form className="flex flex-1 flex-col overflow-hidden p-6" onSubmit={handleFormSubmit}>
+              <div className="space-y-5 flex-1 overflow-y-auto pr-2">
                 <div>
                   <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">
                     Sweet Name
@@ -599,7 +599,7 @@ const HomePage = () => {
                 </div>
               </div>
 
-              <div className="mt-6 flex flex-col gap-3 border-t-2 border-stone-100 pt-6 sm:flex-row sm:justify-end">
+              <div className="mt-6 flex shrink-0 flex-col gap-3 border-t-2 border-stone-100 pt-6 sm:flex-row sm:justify-end">
                 <button
                   type="button"
                   onClick={() => {

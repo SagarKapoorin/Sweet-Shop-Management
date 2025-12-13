@@ -22,6 +22,9 @@ import {
 import { authenticate, authorizeAdmin } from './middleware/auth';
 
 const router = Router();
+router.get('/health', (_req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
 router.post('/auth/register', validateBody(registerSchema), registerUser);
 router.post('/auth/login', validateBody(loginSchema), loginUser);
 router.get('/sweets', listSweetsController);
