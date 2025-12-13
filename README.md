@@ -1,6 +1,7 @@
 # Sweet Shop
 
 #### Demo Video here : https://drive.google.com/file/d/1va8HSSwVgq1cknU3PSYf7hwbJ6qz6zOt/view?usp=sharing
+#### Live Link here : https://sweetrush.netlify.app
 
 See per-app guides:
 - Frontend: [client/README.md](client/README.md)
