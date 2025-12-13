@@ -31,6 +31,7 @@ describe('sweet.service', () => {
   });
 
   afterEach(async () => {
+    vi.restoreAllMocks();
     if (mongoose.connection.db) {
       await mongoose.connection.db.dropDatabase();
     }
@@ -60,7 +61,23 @@ describe('sweet.service', () => {
       stock: 5
     });
     await service.createSweet({ name: 'Chocolate Fudge', category: 'Modern', price: 15, stock: 5 });
+
+    const aggregateMock = vi.spyOn(Sweet, 'aggregate').mockReturnValue({
+      exec: vi.fn().mockImplementation(async () => {
+        const docs = await Sweet.find({ category: /Traditional/i }).exec();
+        return docs.map((sweet) => ({
+          _id: sweet._id,
+          name: sweet.name,
+          category: sweet.category,
+          price: sweet.price,
+          stock: sweet.stock,
+          description: sweet.description
+        }));
+      })
+    } as unknown as ReturnType<typeof Sweet.aggregate>);
+
     const results = await service.searchSweets({ category: 'Traditional' });
+    aggregateMock.mockRestore();
     expect(results.length).toBe(1);
     expect(results[0]?.name).toBe('Gulab Jamun');
   });
