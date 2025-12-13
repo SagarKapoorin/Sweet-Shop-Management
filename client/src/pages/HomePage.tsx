@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import api from '../api/axios';
 import Navbar from '../components/Navbar';
 import SweetCard from '../components/SweetCard';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { BagIcon, CloseIcon, LoaderIcon, SearchIcon } from '../assets/icons';
 import { type Sweet, type SweetPayload } from '../types/types';
 import { Sparkle, CupcakeIcon, LollipopIcon, DonutPattern } from '../components/Decorations';
@@ -18,7 +18,6 @@ const HomePage = () => {
   const [fetching, setFetching] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedTerm, setDebouncedTerm] = useState('');
-  const [category, setCategory] = useState('');
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const [showForm, setShowForm] = useState(false);
@@ -53,12 +52,11 @@ const HomePage = () => {
   const query = useMemo(() => {
     const params = new URLSearchParams();
     if (debouncedTerm) params.append('name', debouncedTerm);
-    if (category) params.append('category', category);
     if (minPrice) params.append('minPrice', minPrice);
     if (maxPrice) params.append('maxPrice', maxPrice);
     const built = params.toString();
     return built ? `?${built}` : '';
-  }, [debouncedTerm, category, minPrice, maxPrice]);
+  }, [debouncedTerm, minPrice, maxPrice]);
 
   const loadSweets = async () => {
     setFetching(true);
@@ -252,8 +250,8 @@ const HomePage = () => {
           </div>
 
           <div className="p-5">
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <div className="sm:col-span-2">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="sm:col-span-2 lg:col-span-3">
                 <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">
                   Search
                 </label>
@@ -266,36 +264,6 @@ const HomePage = () => {
                     className="w-full bg-transparent text-sm font-medium text-stone-900 placeholder:text-stone-400 focus:outline-none"
                   />
                 </div>
-              </div>
-
-              <div>
-                <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">
-                  Category
-                </label>
-                <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  className="w-full rounded-xl border-2 border-stone-200 bg-stone-50 px-4 py-3 text-sm font-semibold text-stone-900 transition-all focus:border-amber-400 focus:bg-white focus:shadow-lg focus:shadow-amber-200/50 focus:outline-none"
-                >
-                  <option value="">All Categories</option>
-                  {categories.map((c) => (
-                    <option key={c} value={c}>
-                      {c}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">
-                  Custom Category
-                </label>
-                <input
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  placeholder="Type custom..."
-                  className="w-full rounded-xl border-2 border-stone-200 bg-stone-50 px-4 py-3 text-sm font-semibold text-stone-900 placeholder:text-stone-400 transition-all focus:border-amber-400 focus:bg-white focus:shadow-lg focus:shadow-amber-200/50 focus:outline-none"
-                />
               </div>
 
               <div>
@@ -324,7 +292,7 @@ const HomePage = () => {
                 />
               </div>
 
-              <div className="flex items-end sm:col-span-2">
+              <div className="flex items-end sm:col-span-2 lg:col-span-1">
                 <button
                   onClick={loadSweets}
                   className="group relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-rose-500 via-pink-500 to-amber-500 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-rose-200/50 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-rose-300/50"
