@@ -7,14 +7,28 @@ type SweetCardProps = {
   onPurchase: (sweet: Sweet) => void;
   onEdit?: (sweet: Sweet) => void;
   onDelete?: (id: string) => void;
+  onView?: (sweet: Sweet) => void;
 };
 
-const SweetCard = ({ sweet, role, onPurchase, onEdit, onDelete }: SweetCardProps) => {
+const SweetCard = ({ sweet, role, onPurchase, onEdit, onDelete, onView }: SweetCardProps) => {
   const out = sweet.stock === 0;
   const lowStock = sweet.stock > 0 && sweet.stock <= 5;
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl border-2 border-stone-200 bg-gradient-to-br from-white via-amber-50/20 to-rose-50/20 p-5 shadow-lg shadow-stone-200/50 transition-all duration-500 hover:-translate-y-3 hover:rotate-1 hover:border-amber-300 hover:shadow-2xl hover:shadow-amber-200/50">
+    <div
+      role="button"
+      tabIndex={0}
+      aria-label={sweet.name}
+      data-testid="sweet-card"
+      onClick={() => onView?.(sweet)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onView?.(sweet);
+        }
+      }}
+      className="group relative overflow-hidden rounded-2xl border-2 border-stone-200 bg-gradient-to-br from-white via-amber-50/20 to-rose-50/20 p-5 shadow-lg shadow-stone-200/50 transition-all duration-500 hover:-translate-y-3 hover:rotate-1 hover:border-amber-300 hover:shadow-2xl hover:shadow-amber-200/50 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:ring-offset-2 focus:ring-offset-white"
+    >
       <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-gradient-to-br from-amber-200/30 to-rose-200/30 blur-3xl transition-all duration-500 group-hover:scale-150 group-hover:opacity-80" />
 
       <div className="absolute left-4 top-4 h-6 w-6 rounded-full bg-amber-300/20 transition-all duration-500 group-hover:scale-150 group-hover:bg-amber-400/40" />
@@ -78,7 +92,11 @@ const SweetCard = ({ sweet, role, onPurchase, onEdit, onDelete }: SweetCardProps
           <div className="flex flex-col gap-2">
             <button
               disabled={out}
-              onClick={() => onPurchase(sweet)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onPurchase(sweet);
+              }}
+              aria-label={`Purchase ${sweet.name}`}
               className={`flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold shadow-lg transition-all ${
                 out
                   ? 'cursor-not-allowed bg-stone-300 text-stone-500'
@@ -91,14 +109,20 @@ const SweetCard = ({ sweet, role, onPurchase, onEdit, onDelete }: SweetCardProps
             {role === 'admin' && (
               <div className="flex gap-2">
                 <button
-                  onClick={() => onEdit?.(sweet)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onEdit?.(sweet);
+                  }}
                   className="flex h-10 w-10 items-center justify-center rounded-xl border-2 border-stone-200 bg-white text-stone-700 shadow-sm transition-all hover:scale-105 hover:border-emerald-400 hover:bg-emerald-50 hover:text-emerald-600 hover:shadow-lg hover:shadow-emerald-200/50"
                   aria-label="Edit"
                 >
                   <EditIcon />
                 </button>
                 <button
-                  onClick={() => onDelete?.(sweet.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDelete?.(sweet.id);
+                  }}
                   className="flex h-10 w-10 items-center justify-center rounded-xl border-2 border-stone-200 bg-white text-stone-700 shadow-sm transition-all hover:scale-105 hover:border-rose-400 hover:bg-rose-50 hover:text-rose-600 hover:shadow-lg hover:shadow-rose-200/50"
                   aria-label="Delete"
                 >

@@ -5,7 +5,7 @@ import api from '../api/axios';
 import Navbar from '../components/Navbar';
 import SweetCard from '../components/SweetCard';
 import { useAuth } from '../context/AuthContext';
-import { CloseIcon, LoaderIcon, SearchIcon } from '../assets/icons';
+import { BagIcon, CloseIcon, LoaderIcon, SearchIcon } from '../assets/icons';
 import { type Sweet, type SweetPayload } from '../types/types';
 import { Sparkle, CupcakeIcon, LollipopIcon, DonutPattern } from '../components/Decorations';
 
@@ -32,6 +32,11 @@ const HomePage = () => {
   });
   const [purchaseTarget, setPurchaseTarget] = useState<Sweet | null>(null);
   const [purchaseQty, setPurchaseQty] = useState('1');
+  const [detailSweet, setDetailSweet] = useState<Sweet | null>(null);
+  const [detailLoading, setDetailLoading] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
+  const [restockQty, setRestockQty] = useState('1');
+  const [restockLoading, setRestockLoading] = useState(false);
   const errorMessage = (err: unknown) => {
     if (axios.isAxiosError(err)) {
       const data = err.response?.data as { message?: string; error?: string };
@@ -71,6 +76,22 @@ const HomePage = () => {
     loadSweets();
   }, [query]);
 
+  const openSweetDetail = async (sweet: Sweet) => {
+    setShowDetail(true);
+    setDetailLoading(true);
+    setRestockQty('1');
+    setDetailSweet(null);
+    try {
+      const res = await api.get(`/sweets/${sweet.id}`);
+      setDetailSweet(res.data);
+    } catch (err) {
+      toast.error(errorMessage(err));
+      setShowDetail(false);
+    } finally {
+      setDetailLoading(false);
+    }
+  };
+
   const openPurchase = (sweet: Sweet) => {
     setPurchaseTarget(sweet);
     setPurchaseQty('1');
@@ -97,6 +118,27 @@ const HomePage = () => {
       toast.error(errorMessage(err));
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleRestock = async () => {
+    if (!user || user.role !== 'admin' || !detailSweet) return;
+    const qty = Number(restockQty);
+    if (!Number.isInteger(qty) || qty <= 0) {
+      toast.error('Enter a valid quantity');
+      return;
+    }
+    setRestockLoading(true);
+    try {
+      const res = await api.post(`/sweets/${detailSweet.id}/restock`, { quantity: qty });
+      toast.success('Stock updated');
+      setDetailSweet(res.data ?? { ...detailSweet, stock: detailSweet.stock + qty });
+      setRestockQty('1');
+      loadSweets();
+    } catch (err) {
+      toast.error(errorMessage(err));
+    } finally {
+      setRestockLoading(false);
     }
   };
 
@@ -176,7 +218,7 @@ const HomePage = () => {
           <Sparkle delay="0.5s" left="75%" top="60%" />
 
           <div className="relative animate-bounce-in">
-            <h1 className="bg-gradient-to-r from-rose-600 via-pink-600 to-amber-600 bg-clip-text text-4xl font-black text-transparent sm:text-6xl">
+            <h1 className="bg-gradient-to-r from-rose-600 via-pink-600 to-amber-600 bg-clip-text text-4xl pb-8 font-black text-transparent sm:text-6xl">
               Discover Sweet Delights
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-base font-medium text-stone-700 sm:text-lg">
@@ -327,6 +369,7 @@ const HomePage = () => {
                     onPurchase={openPurchase}
                     onEdit={openEdit}
                     onDelete={handleDelete}
+                    onView={openSweetDetail}
                   />
                 </div>
               ))}
@@ -347,6 +390,126 @@ const HomePage = () => {
           </>
         )}
       </main>
+
+      {showDetail && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-900/60 px-4 backdrop-blur-sm">
+          <div className="w-full max-w-3xl animate-in fade-in zoom-in overflow-hidden rounded-3xl border-2 border-stone-200 bg-white shadow-2xl">
+            <div className="border-b-2 border-stone-100 bg-gradient-to-r from-amber-50 via-white to-rose-50 px-6 py-5">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-2xl font-bold text-stone-900">
+                    {detailSweet?.name || 'Sweet details'}
+                  </h3>
+                  <p className="mt-1 text-sm text-stone-600">Explore sweet details and actions</p>
+                </div>
+                <button
+                  onClick={() => setShowDetail(false)}
+                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-stone-100 text-stone-600 transition-all hover:bg-rose-100 hover:text-rose-600"
+                >
+                  <CloseIcon />
+                </button>
+              </div>
+            </div>
+
+            <div className="p-6">
+              {detailLoading ? (
+                <div className="flex min-h-[240px] items-center justify-center">
+                  <LoaderIcon />
+                </div>
+              ) : detailSweet ? (
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <div className="space-y-4">
+                    <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-100 to-rose-100 px-3 py-1 shadow-sm">
+                      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber-600" />
+                      <span className="text-xs font-bold uppercase tracking-wider text-amber-800">
+                        {detailSweet.category}
+                      </span>
+                    </div>
+                    <h4 className="text-3xl font-black text-stone-900">{detailSweet.name}</h4>
+                    {detailSweet.description && (
+                      <p className="text-sm leading-relaxed text-stone-600">
+                        {detailSweet.description}
+                      </p>
+                    )}
+                    <div className="flex flex-wrap gap-3">
+                      <span className="rounded-full bg-emerald-50 px-4 py-2 text-xs font-semibold text-emerald-700">
+                        Stock: {detailSweet.stock}
+                      </span>
+                      <span className="rounded-full bg-amber-50 px-4 py-2 text-xs font-semibold text-amber-700">
+                        Price: ${detailSweet.price.toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4 rounded-2xl border-2 border-stone-200 bg-gradient-to-br from-white via-amber-50/40 to-rose-50/40 p-5 shadow-lg shadow-amber-100/50">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-wide text-stone-500">
+                          Purchase
+                        </p>
+                        <p className="text-xl font-bold text-stone-900">Get this sweet</p>
+                      </div>
+                      <button
+                        disabled={detailSweet.stock === 0}
+                        onClick={() => {
+                          setShowDetail(false);
+                          openPurchase(detailSweet);
+                        }}
+                        className={`flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-bold shadow-lg transition-all ${
+                          detailSweet.stock === 0
+                            ? 'cursor-not-allowed bg-stone-300 text-stone-500'
+                            : 'bg-gradient-to-r from-rose-500 to-amber-500 text-white shadow-rose-200/50 hover:scale-105 hover:shadow-xl hover:shadow-rose-300/50'
+                        }`}
+                      >
+                        <BagIcon />
+                        Purchase
+                      </button>
+                    </div>
+
+                    {user?.role === 'admin' && (
+                      <div className="rounded-xl border-2 border-emerald-200 bg-emerald-50 p-4">
+                        <div className="mb-3 flex items-center justify-between">
+                          <div>
+                            <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
+                              Admin
+                            </p>
+                            <p className="text-sm font-bold text-emerald-900">Restock inventory</p>
+                          </div>
+                          <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-emerald-700 shadow-sm">
+                            Current: {detailSweet.stock}
+                          </span>
+                        </div>
+                        <div className="flex flex-col gap-3 sm:flex-row">
+                          <input
+                            type="number"
+                            min={1}
+                            value={restockQty}
+                            onChange={(e) => setRestockQty(e.target.value)}
+                            className="w-full rounded-xl border-2 border-emerald-200 bg-white px-4 py-3 text-sm font-semibold text-stone-900 placeholder:text-stone-400 focus:border-emerald-400 focus:outline-none"
+                            placeholder="Add quantity"
+                          />
+                          <button
+                            disabled={restockLoading}
+                            onClick={handleRestock}
+                            className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-200/50 transition-all hover:scale-105 hover:shadow-xl hover:shadow-emerald-300/50 disabled:opacity-60 disabled:hover:scale-100"
+                          >
+                            {restockLoading && <LoaderIcon />}
+                            Restock
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="flex min-h-[240px] items-center justify-center text-sm font-semibold text-stone-600">
+                  Sweet not found
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-900/60 px-4 backdrop-blur-sm">
