@@ -1,9 +1,9 @@
-import { BagIcon, DeleteIcon, EditIcon } from "../assets/icons";
-import { type Sweet } from "../types/types";
+import { BagIcon, DeleteIcon, EditIcon } from '../assets/icons';
+import { type Sweet } from '../types/types';
 
 type SweetCardProps = {
   sweet: Sweet;
-  role?: "user" | "admin" | null;
+  role?: 'user' | 'admin' | null;
   onPurchase: (sweet: Sweet) => void;
   onEdit?: (sweet: Sweet) => void;
   onDelete?: (id: string) => void;
@@ -27,13 +27,17 @@ const SweetCard = ({ sweet, role, onPurchase, onEdit, onDelete }: SweetCardProps
           <div className="flex-1">
             <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-100 to-rose-100 px-3 py-1 shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:shadow-md">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber-600" />
-              <span className="text-xs font-bold uppercase tracking-wider text-amber-800">{sweet.category}</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-amber-800">
+                {sweet.category}
+              </span>
             </div>
             <h3 className="text-xl font-bold leading-tight text-stone-900 transition-all duration-300 group-hover:scale-105 group-hover:text-rose-600">
               {sweet.name}
             </h3>
             {sweet.description && (
-              <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-stone-600">{sweet.description}</p>
+              <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-stone-600">
+                {sweet.description}
+              </p>
             )}
           </div>
           {out && (
@@ -52,7 +56,9 @@ const SweetCard = ({ sweet, role, onPurchase, onEdit, onDelete }: SweetCardProps
 
         <div className="mt-5 flex items-end justify-between gap-4 border-t border-stone-200 pt-4">
           <div className="flex-1">
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-stone-500">Price</p>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-stone-500">
+              Price
+            </p>
             <div className="relative">
               <p className="bg-gradient-to-r from-rose-600 via-pink-600 to-amber-600 bg-clip-text text-3xl font-black leading-none text-transparent transition-all duration-300 group-hover:scale-110">
                 ${sweet.price.toFixed(2)}
@@ -60,9 +66,11 @@ const SweetCard = ({ sweet, role, onPurchase, onEdit, onDelete }: SweetCardProps
               <div className="absolute -inset-2 -z-10 rounded-lg bg-gradient-to-r from-rose-200/30 to-amber-200/30 opacity-0 blur transition-opacity duration-300 group-hover:opacity-100" />
             </div>
             <div className="mt-2 flex items-center gap-2">
-              <div className={`h-2 w-2 animate-pulse rounded-full ${out ? "bg-red-500" : lowStock ? "bg-amber-500" : "bg-emerald-500"}`} />
+              <div
+                className={`h-2 w-2 animate-pulse rounded-full ${out ? 'bg-red-500' : lowStock ? 'bg-amber-500' : 'bg-emerald-500'}`}
+              />
               <p className="text-xs font-semibold text-stone-600">
-                {sweet.stock} {sweet.stock === 1 ? "item" : "items"} available
+                {sweet.stock} {sweet.stock === 1 ? 'item' : 'items'} available
               </p>
             </div>
           </div>
@@ -73,14 +81,14 @@ const SweetCard = ({ sweet, role, onPurchase, onEdit, onDelete }: SweetCardProps
               onClick={() => onPurchase(sweet)}
               className={`flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold shadow-lg transition-all ${
                 out
-                  ? "cursor-not-allowed bg-stone-300 text-stone-500"
-                  : "bg-gradient-to-r from-rose-500 to-amber-500 text-white shadow-rose-200/50 hover:scale-105 hover:shadow-xl hover:shadow-rose-300/50"
+                  ? 'cursor-not-allowed bg-stone-300 text-stone-500'
+                  : 'bg-gradient-to-r from-rose-500 to-amber-500 text-white shadow-rose-200/50 hover:scale-105 hover:shadow-xl hover:shadow-rose-300/50'
               }`}
             >
               <BagIcon />
               <span className="hidden sm:inline">Purchase</span>
             </button>
-            {role === "admin" && (
+            {role === 'admin' && (
               <div className="flex gap-2">
                 <button
                   onClick={() => onEdit?.(sweet)}

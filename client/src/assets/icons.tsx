@@ -1,45 +1,100 @@
+import type { SVGProps } from 'react';
+
 export const PlusIcon = () => (
-  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    className="h-4 w-4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <path strokeLinecap="round" d="M12 5v14M5 12h14" />
   </svg>
 );
 
 export const LoginIcon = () => (
-  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    className="h-4 w-4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <path strokeLinecap="round" strokeLinejoin="round" d="M15 3h4v18h-4" />
     <path strokeLinecap="round" strokeLinejoin="round" d="M10 17l5-5-5-5" />
   </svg>
 );
 
 export const LogoutIcon = () => (
-  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    className="h-4 w-4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <path strokeLinecap="round" strokeLinejoin="round" d="M9 3H5v18h4" />
     <path strokeLinecap="round" strokeLinejoin="round" d="M14 17l5-5-5-5" />
   </svg>
 );
 
 export const HomeIcon = () => (
-  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3 10.5 12 4l9 6.5V20a1 1 0 0 1-1 1h-4v-5H8v5H4a1 1 0 0 1-1-1z" />
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    className="h-5 w-5"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M3 10.5 12 4l9 6.5V20a1 1 0 0 1-1 1h-4v-5H8v5H4a1 1 0 0 1-1-1z"
+    />
   </svg>
 );
 
 export const BagIcon = () => (
-  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    className="h-4 w-4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <path strokeLinecap="round" strokeLinejoin="round" d="M6 9h12l-1 11H7z" />
     <path strokeLinecap="round" strokeLinejoin="round" d="M9 9V7a3 3 0 0 1 6 0v2" />
   </svg>
 );
 
 export const EditIcon = () => (
-  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    className="h-4 w-4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <path strokeLinecap="round" strokeLinejoin="round" d="m5 15 4 4 10-10-4-4z" />
     <path strokeLinecap="round" strokeLinejoin="round" d="M3 21h6" />
   </svg>
 );
 
 export const DeleteIcon = () => (
-  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    className="h-4 w-4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <path strokeLinecap="round" strokeLinejoin="round" d="M5 7h14" />
     <path strokeLinecap="round" strokeLinejoin="round" d="M10 11v6M14 11v6" />
     <path strokeLinecap="round" strokeLinejoin="round" d="M9 7V5h6v2" />
@@ -48,50 +103,183 @@ export const DeleteIcon = () => (
 );
 
 export const LoaderIcon = () => (
-  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-8 w-8 animate-spin text-rose-600" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    className="h-8 w-8 animate-spin text-rose-600"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <circle cx="12" cy="12" r="9" opacity="0.25" />
     <path strokeLinecap="round" d="M21 12a9 9 0 0 0-9-9" />
   </svg>
 );
 
 export const SmallLoaderIcon = () => (
-  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4 animate-spin" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    className="h-4 w-4 animate-spin"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <circle cx="12" cy="12" r="9" opacity="0.25" />
     <path strokeLinecap="round" d="M21 12a9 9 0 0 0-9-9" />
   </svg>
 );
 
 export const CloseIcon = () => (
-  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    className="h-5 w-5"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <path strokeLinecap="round" strokeLinejoin="round" d="m6 6 12 12M18 6 6 18" />
   </svg>
 );
 
 export const SearchIcon = () => (
-  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    className="h-4 w-4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <circle cx="11" cy="11" r="6" />
     <path strokeLinecap="round" strokeLinejoin="round" d="m16 16 4 4" />
   </svg>
 );
 
 export const MailIcon = () => (
-  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    className="h-4 w-4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16v12H4z" />
     <path strokeLinecap="round" strokeLinejoin="round" d="m4 7 8 6 8-6" />
   </svg>
 );
 
 export const LockIcon = () => (
-  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    className="h-4 w-4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <rect x="5" y="10" width="14" height="10" rx="2" />
     <path strokeLinecap="round" strokeLinejoin="round" d="M8 10V8a4 4 0 0 1 8 0v2" />
   </svg>
 );
 
 export const RegisterIcon = () => (
-  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    className="h-4 w-4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <path strokeLinecap="round" strokeLinejoin="round" d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5" />
     <path strokeLinecap="round" strokeLinejoin="round" d="M12 22v-6" />
     <path strokeLinecap="round" strokeLinejoin="round" d="M9 19h6" />
+  </svg>
+);
+
+export const CandySvg = (props: SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="M12 2C10.34 2 9 3.34 9 5c0 .35.07.69.18 1H7c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3zm0 2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1z" />
+  </svg>
+);
+
+export const SparkleSvg = (props: SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="M12 0l2.5 7.5L22 10l-7.5 2.5L12 20l-2.5-7.5L2 10l7.5-2.5L12 0z" />
+  </svg>
+);
+
+export const CupcakeSvg = (props: SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="M12 3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm7 8h-1.35c-.25-.73-.75-1.35-1.39-1.77.64-.47 1.05-1.23 1.05-2.1C17.31 5.51 15.8 4 14 4c-.93 0-1.77.38-2.38 1-.61-.62-1.45-1-2.38-1-1.8 0-3.31 1.51-3.31 3.13 0 .87.41 1.63 1.05 2.1-.64.42-1.14 1.04-1.39 1.77H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-6c0-1.1-.9-2-2-2z" />
+  </svg>
+);
+
+export const LollipopSvg = (props: SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <circle cx="12" cy="9" r="6" />
+    <rect x="11" y="13" width="2" height="8" rx="1" />
+  </svg>
+);
+
+export const DonutPatternSvg = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" {...props}>
+    <defs>
+      <pattern
+        id="donut-pattern"
+        x="0"
+        y="0"
+        width="100"
+        height="100"
+        patternUnits="userSpaceOnUse"
+      >
+        <circle
+          cx="25"
+          cy="25"
+          r="15"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="6"
+          className="text-rose-500"
+        />
+        <circle
+          cx="75"
+          cy="75"
+          r="15"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="6"
+          className="text-amber-500"
+        />
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#donut-pattern)" />
+  </svg>
+);
+
+export const WavePatternSvg = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    viewBox="0 0 1200 120"
+    preserveAspectRatio="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path
+      d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z"
+      opacity=".25"
+      className="fill-amber-200"
+    />
+    <path
+      d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z"
+      opacity=".5"
+      className="fill-rose-200"
+    />
+    <path
+      d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"
+      className="fill-amber-100"
+    />
   </svg>
 );

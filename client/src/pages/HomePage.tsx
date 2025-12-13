@@ -1,37 +1,43 @@
-import axios from "axios";
-import { type FormEvent, useEffect, useMemo, useState } from "react";
-import toast from "react-hot-toast";
-import api from "../api/axios";
-import Navbar from "../components/Navbar";
-import SweetCard from "../components/SweetCard";
-import { useAuth } from "../context/AuthContext";
-import { CloseIcon, LoaderIcon, SearchIcon } from "../assets/icons";
-import { type Sweet, type SweetPayload } from "../types/types";
-import { Sparkle, CupcakeIcon, LollipopIcon, DonutPattern } from "../components/Decorations";
+import axios from 'axios';
+import { type FormEvent, useEffect, useMemo, useState } from 'react';
+import toast from 'react-hot-toast';
+import api from '../api/axios';
+import Navbar from '../components/Navbar';
+import SweetCard from '../components/SweetCard';
+import { useAuth } from '../context/AuthContext';
+import { CloseIcon, LoaderIcon, SearchIcon } from '../assets/icons';
+import { type Sweet, type SweetPayload } from '../types/types';
+import { Sparkle, CupcakeIcon, LollipopIcon, DonutPattern } from '../components/Decorations';
 
-const categories = ["Chocolate", "Candy", "Pastry", "Traditional", "Other"];
+const categories = ['Chocolate', 'Candy', 'Pastry', 'Traditional', 'Other'];
 
 const HomePage = () => {
   const { user } = useAuth();
   const [sweets, setSweets] = useState<Sweet[]>([]);
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedTerm, setDebouncedTerm] = useState("");
-  const [category, setCategory] = useState("");
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedTerm, setDebouncedTerm] = useState('');
+  const [category, setCategory] = useState('');
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<Sweet | null>(null);
-  const [form, setForm] = useState<SweetPayload>({ name: "", category: "", price: 0, stock: 0, description: "" });
+  const [form, setForm] = useState<SweetPayload>({
+    name: '',
+    category: '',
+    price: 0,
+    stock: 0,
+    description: '',
+  });
   const [purchaseTarget, setPurchaseTarget] = useState<Sweet | null>(null);
-  const [purchaseQty, setPurchaseQty] = useState("1");
+  const [purchaseQty, setPurchaseQty] = useState('1');
   const errorMessage = (err: unknown) => {
     if (axios.isAxiosError(err)) {
       const data = err.response?.data as { message?: string; error?: string };
       return data?.message || data?.error || err.message;
     }
-    return err instanceof Error ? err.message : "Something went wrong";
+    return err instanceof Error ? err.message : 'Something went wrong';
   };
 
   useEffect(() => {
@@ -41,18 +47,18 @@ const HomePage = () => {
 
   const query = useMemo(() => {
     const params = new URLSearchParams();
-    if (debouncedTerm) params.append("name", debouncedTerm);
-    if (category) params.append("category", category);
-    if (minPrice) params.append("minPrice", minPrice);
-    if (maxPrice) params.append("maxPrice", maxPrice);
+    if (debouncedTerm) params.append('name', debouncedTerm);
+    if (category) params.append('category', category);
+    if (minPrice) params.append('minPrice', minPrice);
+    if (maxPrice) params.append('maxPrice', maxPrice);
     const built = params.toString();
-    return built ? `?${built}` : "";
+    return built ? `?${built}` : '';
   }, [debouncedTerm, category, minPrice, maxPrice]);
 
   const loadSweets = async () => {
     setFetching(true);
     try {
-      const res = query ? await api.get(`/sweets/search${query}`) : await api.get("/sweets");
+      const res = query ? await api.get(`/sweets/search${query}`) : await api.get('/sweets');
       setSweets(res.data);
     } catch (err) {
       toast.error(errorMessage(err));
@@ -67,24 +73,24 @@ const HomePage = () => {
 
   const openPurchase = (sweet: Sweet) => {
     setPurchaseTarget(sweet);
-    setPurchaseQty("1");
+    setPurchaseQty('1');
   };
 
   const handlePurchaseConfirm = async () => {
     if (!user) {
-      toast.error("Login required");
+      toast.error('Login required');
       return;
     }
     if (!purchaseTarget) return;
     const qty = Number(purchaseQty);
     if (!Number.isInteger(qty) || qty <= 0) {
-      toast.error("Enter a valid quantity");
+      toast.error('Enter a valid quantity');
       return;
     }
     setLoading(true);
     try {
       await api.post(`/sweets/${purchaseTarget.id}/purchase`, { quantity: qty });
-      toast.success("Purchased");
+      toast.success('Purchased');
       setPurchaseTarget(null);
       loadSweets();
     } catch (err) {
@@ -95,11 +101,11 @@ const HomePage = () => {
   };
 
   const handleDelete = async (id: string) => {
-    if (!user || user.role !== "admin") return;
+    if (!user || user.role !== 'admin') return;
     setLoading(true);
     try {
       await api.delete(`/sweets/${id}`);
-      toast.success("Deleted");
+      toast.success('Deleted');
       loadSweets();
     } catch (err) {
       toast.error(errorMessage(err));
@@ -110,7 +116,7 @@ const HomePage = () => {
 
   const handleFormSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!user || user.role !== "admin") return;
+    if (!user || user.role !== 'admin') return;
     setLoading(true);
     try {
       const payload: SweetPayload = {
@@ -119,14 +125,14 @@ const HomePage = () => {
       };
       if (editing) {
         await api.put(`/sweets/${editing.id}`, payload);
-        toast.success("Sweet updated");
+        toast.success('Sweet updated');
       } else {
-        await api.post("/sweets", payload);
-        toast.success("Sweet created");
+        await api.post('/sweets', payload);
+        toast.success('Sweet created');
       }
       setShowForm(false);
       setEditing(null);
-      setForm({ name: "", category: "", price: 0, stock: 0, description: "" });
+      setForm({ name: '', category: '', price: 0, stock: 0, description: '' });
       loadSweets();
     } catch (err) {
       toast.error(errorMessage(err));
@@ -142,7 +148,7 @@ const HomePage = () => {
       category: sweet.category,
       price: sweet.price,
       stock: sweet.stock,
-      description: sweet.description ?? "",
+      description: sweet.description ?? '',
     });
     setShowForm(true);
   };
@@ -206,7 +212,9 @@ const HomePage = () => {
           <div className="p-5">
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <div className="sm:col-span-2">
-                <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Search</label>
+                <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">
+                  Search
+                </label>
                 <div className="flex items-center gap-3 rounded-xl border-2 border-stone-200 bg-stone-50 px-4 py-3 transition-all focus-within:border-amber-400 focus-within:bg-white focus-within:shadow-lg focus-within:shadow-amber-200/50">
                   <SearchIcon />
                   <input
@@ -219,7 +227,9 @@ const HomePage = () => {
               </div>
 
               <div>
-                <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Category</label>
+                <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">
+                  Category
+                </label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
@@ -235,7 +245,9 @@ const HomePage = () => {
               </div>
 
               <div>
-                <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Custom Category</label>
+                <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">
+                  Custom Category
+                </label>
                 <input
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
@@ -245,7 +257,9 @@ const HomePage = () => {
               </div>
 
               <div>
-                <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Min Price ($)</label>
+                <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">
+                  Min Price ($)
+                </label>
                 <input
                   type="number"
                   value={minPrice}
@@ -256,7 +270,9 @@ const HomePage = () => {
               </div>
 
               <div>
-                <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Max Price ($)</label>
+                <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">
+                  Max Price ($)
+                </label>
                 <input
                   type="number"
                   value={maxPrice}
@@ -286,14 +302,16 @@ const HomePage = () => {
           <div className="flex min-h-[400px] items-center justify-center">
             <div className="text-center">
               <LoaderIcon />
-              <p className="mt-4 text-sm font-semibold text-stone-600">Loading delicious treats...</p>
+              <p className="mt-4 text-sm font-semibold text-stone-600">
+                Loading delicious treats...
+              </p>
             </div>
           </div>
         ) : (
           <>
             <div className="mb-6 flex items-center justify-between">
               <p className="text-sm font-bold text-stone-600">
-                {filteredSweets.length} {filteredSweets.length === 1 ? "sweet" : "sweets"} found
+                {filteredSweets.length} {filteredSweets.length === 1 ? 'sweet' : 'sweets'} found
               </p>
             </div>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -301,7 +319,7 @@ const HomePage = () => {
                 <div
                   key={sweet.id}
                   className="animate-slide-up"
-                  style={{ animationDelay: `${index * 0.1}s`, animationFillMode: "both" }}
+                  style={{ animationDelay: `${index * 0.1}s`, animationFillMode: 'both' }}
                 >
                   <SweetCard
                     sweet={sweet}
@@ -318,8 +336,12 @@ const HomePage = () => {
                 <div className="mb-4 flex h-20 w-20 animate-pulse items-center justify-center rounded-full bg-gradient-to-br from-amber-200 to-rose-200 shadow-lg">
                   <SearchIcon />
                 </div>
-                <h3 className="mb-2 bg-gradient-to-r from-rose-600 to-amber-600 bg-clip-text text-xl font-bold text-transparent">No sweets found</h3>
-                <p className="text-sm font-medium text-stone-600">Try adjusting your filters or search terms</p>
+                <h3 className="mb-2 bg-gradient-to-r from-rose-600 to-amber-600 bg-clip-text text-xl font-bold text-transparent">
+                  No sweets found
+                </h3>
+                <p className="text-sm font-medium text-stone-600">
+                  Try adjusting your filters or search terms
+                </p>
               </div>
             )}
           </>
@@ -332,9 +354,13 @@ const HomePage = () => {
             <div className="border-b-2 border-stone-100 bg-gradient-to-r from-amber-50 via-white to-rose-50 px-6 py-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-2xl font-bold text-stone-900">{editing ? "Edit Sweet" : "Add New Sweet"}</h3>
+                  <h3 className="text-2xl font-bold text-stone-900">
+                    {editing ? 'Edit Sweet' : 'Add New Sweet'}
+                  </h3>
                   <p className="mt-1 text-sm text-stone-600">
-                    {editing ? "Update sweet information" : "Add a delicious new treat to your shop"}
+                    {editing
+                      ? 'Update sweet information'
+                      : 'Add a delicious new treat to your shop'}
                   </p>
                 </div>
                 <button
@@ -352,7 +378,9 @@ const HomePage = () => {
             <form className="p-6" onSubmit={handleFormSubmit}>
               <div className="space-y-5">
                 <div>
-                  <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Sweet Name</label>
+                  <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">
+                    Sweet Name
+                  </label>
                   <input
                     required
                     value={form.name}
@@ -364,7 +392,9 @@ const HomePage = () => {
 
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div>
-                    <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Category</label>
+                    <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">
+                      Category
+                    </label>
                     <select
                       value={form.category}
                       onChange={(e) => setForm((p) => ({ ...p, category: e.target.value }))}
@@ -379,7 +409,9 @@ const HomePage = () => {
                     </select>
                   </div>
                   <div>
-                    <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Custom Category</label>
+                    <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">
+                      Custom Category
+                    </label>
                     <input
                       value={form.category}
                       onChange={(e) => setForm((p) => ({ ...p, category: e.target.value }))}
@@ -392,7 +424,9 @@ const HomePage = () => {
 
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div>
-                    <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Price ($)</label>
+                    <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">
+                      Price ($)
+                    </label>
                     <input
                       required
                       min={0}
@@ -405,7 +439,9 @@ const HomePage = () => {
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Stock</label>
+                    <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">
+                      Stock
+                    </label>
                     <input
                       required
                       min={0}
@@ -419,7 +455,9 @@ const HomePage = () => {
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Description (Optional)</label>
+                  <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">
+                    Description (Optional)
+                  </label>
                   <textarea
                     value={form.description}
                     onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
@@ -447,7 +485,7 @@ const HomePage = () => {
                   className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-rose-200/50 transition-all hover:scale-105 hover:shadow-xl hover:shadow-rose-300/50 disabled:opacity-50 disabled:hover:scale-100"
                 >
                   {loading && <LoaderIcon />}
-                  {editing ? "Update Sweet" : "Create Sweet"}
+                  {editing ? 'Update Sweet' : 'Create Sweet'}
                 </button>
               </div>
             </form>
@@ -461,7 +499,9 @@ const HomePage = () => {
             <div className="border-b-2 border-stone-100 bg-gradient-to-r from-amber-50 via-white to-rose-50 px-6 py-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-xl font-bold text-stone-900">Purchase {purchaseTarget.name}</h3>
+                  <h3 className="text-xl font-bold text-stone-900">
+                    Purchase {purchaseTarget.name}
+                  </h3>
                   <p className="mt-1 text-sm text-stone-600">Select quantity to purchase</p>
                 </div>
                 <button
@@ -483,12 +523,16 @@ const HomePage = () => {
                 </div>
                 <div className="mt-2 flex items-center justify-between">
                   <span className="text-xs font-semibold text-stone-600">Available stock</span>
-                  <span className="text-xs font-bold text-emerald-600">{purchaseTarget.stock} items</span>
+                  <span className="text-xs font-bold text-emerald-600">
+                    {purchaseTarget.stock} items
+                  </span>
                 </div>
               </div>
 
               <div>
-                <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Quantity</label>
+                <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">
+                  Quantity
+                </label>
                 <input
                   type="number"
                   min={1}

@@ -1,9 +1,9 @@
-import { Navigate, Route, Routes, BrowserRouter } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
-import HomePage from "./pages/HomePage";
-import LoginPage from "./pages/LoginPage";
-import { AuthProvider, useAuth } from "./context/AuthContext";
-import "./App.css";
+import { Navigate, Route, Routes, BrowserRouter } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import './App.css';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
