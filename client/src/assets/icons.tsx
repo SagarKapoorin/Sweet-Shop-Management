@@ -48,7 +48,7 @@ export const DeleteIcon = () => (
 );
 
 export const LoaderIcon = () => (
-  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-6 w-6 animate-spin text-indigo-600" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-8 w-8 animate-spin text-rose-600" fill="none" stroke="currentColor" strokeWidth="2">
     <circle cx="12" cy="12" r="9" opacity="0.25" />
     <path strokeLinecap="round" d="M21 12a9 9 0 0 0-9-9" />
   </svg>

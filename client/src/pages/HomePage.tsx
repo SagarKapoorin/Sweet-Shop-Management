@@ -149,238 +149,340 @@ const HomePage = () => {
   const filteredSweets = sweets;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-rose-50">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-rose-50">
       <Navbar onOpenAdmin={() => setShowForm(true)} />
-      <main className="mx-auto max-w-6xl px-4 py-8">
-        <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
-          <div className="flex flex-col gap-3 md:flex-row md:items-end md:gap-4">
-            <div className="flex-1">
-              <label className="text-xs font-semibold text-slate-500">Search</label>
-              <div className="mt-2 flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3">
-                <SearchIcon />
-                <input
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search sweets by Name and Category"
-                  className="w-full bg-transparent py-2 text-sm outline-none"
-                />
+
+      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mb-8 text-center">
+          <h1 className="bg-gradient-to-r from-rose-600 via-amber-600 to-rose-600 bg-clip-text text-4xl font-black text-transparent sm:text-5xl">
+            Discover Sweet Delights
+          </h1>
+          <p className="mt-3 text-base text-stone-600 sm:text-lg">
+            Explore our delicious collection of treats and sweets
+          </p>
+        </div>
+
+        <div className="mb-8 overflow-hidden rounded-2xl border-2 border-stone-200 bg-white shadow-xl shadow-stone-200/50">
+          <div className="border-b-2 border-stone-100 bg-gradient-to-r from-amber-50 via-white to-rose-50 px-5 py-4">
+            <h2 className="flex items-center gap-2 text-lg font-bold text-stone-900">
+              <SearchIcon />
+              Filter & Search
+            </h2>
+          </div>
+
+          <div className="p-5">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="sm:col-span-2">
+                <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Search</label>
+                <div className="flex items-center gap-3 rounded-xl border-2 border-stone-200 bg-stone-50 px-4 py-3 transition-all focus-within:border-amber-400 focus-within:bg-white focus-within:shadow-lg focus-within:shadow-amber-200/50">
+                  <SearchIcon />
+                  <input
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Search sweets by name or category..."
+                    className="w-full bg-transparent text-sm font-medium text-stone-900 placeholder:text-stone-400 focus:outline-none"
+                  />
+                </div>
               </div>
-            </div>
-            <div className="w-full md:w-44">
-              <label className="text-xs font-semibold text-slate-500">Category</label>
-              <div className="mt-2 flex gap-2">
+
+              <div>
+                <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Category</label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm"
+                  className="w-full rounded-xl border-2 border-stone-200 bg-stone-50 px-4 py-3 text-sm font-semibold text-stone-900 transition-all focus:border-amber-400 focus:bg-white focus:shadow-lg focus:shadow-amber-200/50 focus:outline-none"
                 >
-                  <option value="">All</option>
+                  <option value="">All Categories</option>
                   {categories.map((c) => (
                     <option key={c} value={c}>
                       {c}
                     </option>
                   ))}
                 </select>
+              </div>
+
+              <div>
+                <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Custom Category</label>
                 <input
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  placeholder="Other"
-                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm"
+                  placeholder="Type custom..."
+                  className="w-full rounded-xl border-2 border-stone-200 bg-stone-50 px-4 py-3 text-sm font-semibold text-stone-900 placeholder:text-stone-400 transition-all focus:border-amber-400 focus:bg-white focus:shadow-lg focus:shadow-amber-200/50 focus:outline-none"
                 />
               </div>
-            </div>
-            <div className="grid w-full grid-cols-2 gap-3 md:w-64">
+
               <div>
-                <label className="text-xs font-semibold text-slate-500">Min Price</label>
+                <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Min Price ($)</label>
                 <input
                   type="number"
                   value={minPrice}
                   onChange={(e) => setMinPrice(e.target.value)}
-                  className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm"
+                  placeholder="0"
+                  className="w-full rounded-xl border-2 border-stone-200 bg-stone-50 px-4 py-3 text-sm font-semibold text-stone-900 placeholder:text-stone-400 transition-all focus:border-amber-400 focus:bg-white focus:shadow-lg focus:shadow-amber-200/50 focus:outline-none"
                 />
               </div>
+
               <div>
-                <label className="text-xs font-semibold text-slate-500">Max Price</label>
+                <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Max Price ($)</label>
                 <input
                   type="number"
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(e.target.value)}
-                  className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm"
+                  placeholder="999"
+                  className="w-full rounded-xl border-2 border-stone-200 bg-stone-50 px-4 py-3 text-sm font-semibold text-stone-900 placeholder:text-stone-400 transition-all focus:border-amber-400 focus:bg-white focus:shadow-lg focus:shadow-amber-200/50 focus:outline-none"
                 />
               </div>
+
+              <div className="flex items-end sm:col-span-2">
+                <button
+                  onClick={loadSweets}
+                  className="w-full rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-rose-200/50 transition-all hover:scale-105 hover:shadow-xl hover:shadow-rose-300/50"
+                >
+                  Apply Filters
+                </button>
+              </div>
             </div>
-            <button
-              onClick={loadSweets}
-              className="rounded-2xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700"
-            >
-              Apply
-            </button>
           </div>
         </div>
 
         {fetching ? (
-          <div className="mt-8 flex justify-center">
-            <LoaderIcon />
+          <div className="flex min-h-[400px] items-center justify-center">
+            <div className="text-center">
+              <LoaderIcon />
+              <p className="mt-4 text-sm font-semibold text-stone-600">Loading delicious treats...</p>
+            </div>
           </div>
         ) : (
-          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredSweets.map((sweet) => (
-              <SweetCard
-                key={sweet.id}
-                sweet={sweet}
-                role={user?.role}
-                onPurchase={openPurchase}
-                onEdit={openEdit}
-                onDelete={handleDelete}
-              />
-            ))}
-            {filteredSweets.length === 0 && <p className="col-span-full text-center text-sm text-slate-500">No sweets found</p>}
-          </div>
+          <>
+            <div className="mb-6 flex items-center justify-between">
+              <p className="text-sm font-bold text-stone-600">
+                {filteredSweets.length} {filteredSweets.length === 1 ? "sweet" : "sweets"} found
+              </p>
+            </div>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {filteredSweets.map((sweet) => (
+                <SweetCard
+                  key={sweet.id}
+                  sweet={sweet}
+                  role={user?.role}
+                  onPurchase={openPurchase}
+                  onEdit={openEdit}
+                  onDelete={handleDelete}
+                />
+              ))}
+            </div>
+            {filteredSweets.length === 0 && (
+              <div className="flex min-h-[400px] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-stone-300 bg-stone-50 p-12 text-center">
+                <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-stone-200">
+                  <SearchIcon />
+                </div>
+                <h3 className="mb-2 text-xl font-bold text-stone-900">No sweets found</h3>
+                <p className="text-sm text-stone-600">Try adjusting your filters or search terms</p>
+              </div>
+            )}
+          </>
         )}
       </main>
 
       {showForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 px-4">
-          <div className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-xl">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-slate-900">{editing ? "Edit Sweet" : "Add Sweet"}</h3>
-              <button
-                onClick={() => {
-                  setShowForm(false);
-                  setEditing(null);
-                }}
-                className="text-slate-500 transition hover:text-rose-500"
-              >
-                <CloseIcon />
-              </button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-900/60 px-4 backdrop-blur-sm">
+          <div className="w-full max-w-2xl animate-in fade-in zoom-in overflow-hidden rounded-3xl border-2 border-stone-200 bg-white shadow-2xl">
+            <div className="border-b-2 border-stone-100 bg-gradient-to-r from-amber-50 via-white to-rose-50 px-6 py-5">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-2xl font-bold text-stone-900">{editing ? "Edit Sweet" : "Add New Sweet"}</h3>
+                  <p className="mt-1 text-sm text-stone-600">
+                    {editing ? "Update sweet information" : "Add a delicious new treat to your shop"}
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    setShowForm(false);
+                    setEditing(null);
+                  }}
+                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-stone-100 text-stone-600 transition-all hover:bg-rose-100 hover:text-rose-600"
+                >
+                  <CloseIcon />
+                </button>
+              </div>
             </div>
-            <form className="mt-4 space-y-3" onSubmit={handleFormSubmit}>
-              <div>
-                <label className="text-xs font-semibold text-slate-500">Name</label>
-                <input
-                  required
-                  value={form.name}
-                  onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
-                  className="mt-1 w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm"
-                />
-              </div>
-              <div>
-                <label className="text-xs font-semibold text-slate-500">Category</label>
-                <div className="mt-1 flex gap-2">
-                  <select
-                    value={form.category}
-                    onChange={(e) => setForm((p) => ({ ...p, category: e.target.value }))}
-                    className="w-1/2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm"
-                  >
-                    <option value="">Select</option>
-                    {categories.map((c) => (
-                      <option key={c} value={c}>
-                        {c}
-                      </option>
-                    ))}
-                  </select>
-                  <input
-                    value={form.category}
-                    onChange={(e) => setForm((p) => ({ ...p, category: e.target.value }))}
-                    placeholder="Custom"
-                    className="w-1/2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
+
+            <form className="p-6" onSubmit={handleFormSubmit}>
+              <div className="space-y-5">
                 <div>
-                  <label className="text-xs font-semibold text-slate-500">Price</label>
+                  <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Sweet Name</label>
                   <input
                     required
-                    min={0}
-                    type="number"
-                    value={form.price}
-                    onChange={(e) => setForm((p) => ({ ...p, price: Number(e.target.value) }))}
-                    className="mt-1 w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm"
+                    value={form.name}
+                    onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
+                    placeholder="e.g., Chocolate Truffle"
+                    className="w-full rounded-xl border-2 border-stone-200 bg-stone-50 px-4 py-3 text-sm font-semibold text-stone-900 placeholder:text-stone-400 transition-all focus:border-amber-400 focus:bg-white focus:shadow-lg focus:shadow-amber-200/50 focus:outline-none"
                   />
                 </div>
+
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Category</label>
+                    <select
+                      value={form.category}
+                      onChange={(e) => setForm((p) => ({ ...p, category: e.target.value }))}
+                      className="w-full rounded-xl border-2 border-stone-200 bg-stone-50 px-4 py-3 text-sm font-semibold text-stone-900 transition-all focus:border-amber-400 focus:bg-white focus:shadow-lg focus:shadow-amber-200/50 focus:outline-none"
+                    >
+                      <option value="">Select Category</option>
+                      {categories.map((c) => (
+                        <option key={c} value={c}>
+                          {c}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Custom Category</label>
+                    <input
+                      value={form.category}
+                      onChange={(e) => setForm((p) => ({ ...p, category: e.target.value }))}
+                      placeholder="or type custom"
+                      required
+                      className="w-full rounded-xl border-2 border-stone-200 bg-stone-50 px-4 py-3 text-sm font-semibold text-stone-900 placeholder:text-stone-400 transition-all focus:border-amber-400 focus:bg-white focus:shadow-lg focus:shadow-amber-200/50 focus:outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Price ($)</label>
+                    <input
+                      required
+                      min={0}
+                      step="0.01"
+                      type="number"
+                      value={form.price}
+                      onChange={(e) => setForm((p) => ({ ...p, price: Number(e.target.value) }))}
+                      placeholder="0.00"
+                      className="w-full rounded-xl border-2 border-stone-200 bg-stone-50 px-4 py-3 text-sm font-semibold text-stone-900 placeholder:text-stone-400 transition-all focus:border-amber-400 focus:bg-white focus:shadow-lg focus:shadow-amber-200/50 focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Stock</label>
+                    <input
+                      required
+                      min={0}
+                      type="number"
+                      value={form.stock}
+                      onChange={(e) => setForm((p) => ({ ...p, stock: Number(e.target.value) }))}
+                      placeholder="0"
+                      className="w-full rounded-xl border-2 border-stone-200 bg-stone-50 px-4 py-3 text-sm font-semibold text-stone-900 placeholder:text-stone-400 transition-all focus:border-amber-400 focus:bg-white focus:shadow-lg focus:shadow-amber-200/50 focus:outline-none"
+                    />
+                  </div>
+                </div>
+
                 <div>
-                  <label className="text-xs font-semibold text-slate-500">Stock</label>
-                  <input
-                    required
-                    min={0}
-                    type="number"
-                    value={form.stock}
-                    onChange={(e) => setForm((p) => ({ ...p, stock: Number(e.target.value) }))}
-                    className="mt-1 w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm"
+                  <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Description (Optional)</label>
+                  <textarea
+                    value={form.description}
+                    onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
+                    placeholder="Describe your sweet..."
+                    rows={4}
+                    className="w-full rounded-xl border-2 border-stone-200 bg-stone-50 px-4 py-3 text-sm font-semibold text-stone-900 placeholder:text-stone-400 transition-all focus:border-amber-400 focus:bg-white focus:shadow-lg focus:shadow-amber-200/50 focus:outline-none"
                   />
                 </div>
               </div>
-              <div>
-                <label className="text-xs font-semibold text-slate-500">Description</label>
-                <textarea
-                  value={form.description}
-                  onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
-                  className="mt-1 w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm"
-                  rows={3}
-                  placeholder="Optional details"
-                />
-              </div>
-              <div className="flex justify-end gap-3 pt-2">
+
+              <div className="mt-6 flex flex-col gap-3 border-t-2 border-stone-100 pt-6 sm:flex-row sm:justify-end">
                 <button
                   type="button"
                   onClick={() => {
                     setShowForm(false);
                     setEditing(null);
                   }}
-                  className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700"
+                  className="rounded-xl border-2 border-stone-200 px-6 py-3 text-sm font-bold text-stone-700 transition-all hover:bg-stone-50"
                 >
                   Cancel
                 </button>
                 <button
                   disabled={loading}
                   type="submit"
-                  className="flex items-center gap-2 rounded-2xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700 disabled:opacity-60"
+                  className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-rose-200/50 transition-all hover:scale-105 hover:shadow-xl hover:shadow-rose-300/50 disabled:opacity-50 disabled:hover:scale-100"
                 >
                   {loading && <LoaderIcon />}
-                  Save
+                  {editing ? "Update Sweet" : "Create Sweet"}
                 </button>
               </div>
             </form>
           </div>
         </div>
       )}
+
       {purchaseTarget && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 px-4">
-          <div className="w-full max-w-sm rounded-3xl bg-white p-6 shadow-xl">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-slate-900">Purchase {purchaseTarget.name}</h3>
-              <button onClick={() => setPurchaseTarget(null)} className="text-slate-500 transition hover:text-rose-500">
-                <CloseIcon />
-              </button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-900/60 px-4 backdrop-blur-sm">
+          <div className="w-full max-w-md animate-in fade-in zoom-in overflow-hidden rounded-3xl border-2 border-stone-200 bg-white shadow-2xl">
+            <div className="border-b-2 border-stone-100 bg-gradient-to-r from-amber-50 via-white to-rose-50 px-6 py-5">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-xl font-bold text-stone-900">Purchase {purchaseTarget.name}</h3>
+                  <p className="mt-1 text-sm text-stone-600">Select quantity to purchase</p>
+                </div>
+                <button
+                  onClick={() => setPurchaseTarget(null)}
+                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-stone-100 text-stone-600 transition-all hover:bg-rose-100 hover:text-rose-600"
+                >
+                  <CloseIcon />
+                </button>
+              </div>
             </div>
-            <div className="mt-4 space-y-3">
+
+            <div className="p-6">
+              <div className="mb-6 rounded-xl border-2 border-amber-200 bg-amber-50 p-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-semibold text-stone-700">Price per item</span>
+                  <span className="bg-gradient-to-r from-rose-600 to-amber-600 bg-clip-text text-2xl font-black text-transparent">
+                    ${purchaseTarget.price.toFixed(2)}
+                  </span>
+                </div>
+                <div className="mt-2 flex items-center justify-between">
+                  <span className="text-xs font-semibold text-stone-600">Available stock</span>
+                  <span className="text-xs font-bold text-emerald-600">{purchaseTarget.stock} items</span>
+                </div>
+              </div>
+
               <div>
-                <label className="text-xs font-semibold text-slate-500">Quantity</label>
+                <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-stone-700">Quantity</label>
                 <input
                   type="number"
                   min={1}
+                  max={purchaseTarget.stock}
                   value={purchaseQty}
                   onChange={(e) => setPurchaseQty(e.target.value)}
-                  className="mt-1 w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm"
+                  className="w-full rounded-xl border-2 border-stone-200 bg-stone-50 px-4 py-3 text-center text-2xl font-bold text-stone-900 transition-all focus:border-amber-400 focus:bg-white focus:shadow-lg focus:shadow-amber-200/50 focus:outline-none"
                 />
               </div>
-              <div className="flex justify-end gap-3 pt-2">
+
+              {Number(purchaseQty) > 0 && (
+                <div className="mt-4 rounded-xl border-2 border-emerald-200 bg-emerald-50 p-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-semibold text-stone-700">Total Amount</span>
+                    <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-2xl font-black text-transparent">
+                      ${(purchaseTarget.price * Number(purchaseQty)).toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              <div className="mt-6 flex flex-col gap-3 border-t-2 border-stone-100 pt-6 sm:flex-row">
                 <button
                   type="button"
                   onClick={() => setPurchaseTarget(null)}
-                  className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700"
+                  className="flex-1 rounded-xl border-2 border-stone-200 px-6 py-3 text-sm font-bold text-stone-700 transition-all hover:bg-stone-50"
                 >
                   Cancel
                 </button>
                 <button
                   disabled={loading}
                   onClick={handlePurchaseConfirm}
-                  className="flex items-center gap-2 rounded-2xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700 disabled:opacity-60"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-rose-200/50 transition-all hover:scale-105 hover:shadow-xl hover:shadow-rose-300/50 disabled:opacity-50 disabled:hover:scale-100"
                 >
                   {loading && <LoaderIcon />}
-                  Confirm
+                  Confirm Purchase
                 </button>
               </div>
             </div>
