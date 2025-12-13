@@ -35,7 +35,8 @@ const rateLimiter = async (req: Request, res: Response, next: NextFunction): Pro
     const ttlSeconds = results[2]?.[1];
 
     const currentCount = typeof count === 'number' ? count : Number(count);
-    const retryAfter = typeof ttlSeconds === 'number' && ttlSeconds > 0 ? ttlSeconds : windowSeconds;
+    const retryAfter =
+      typeof ttlSeconds === 'number' && ttlSeconds > 0 ? ttlSeconds : windowSeconds;
 
     if (!Number.isFinite(currentCount)) {
       next(new AppError('Rate limiter error', 500));

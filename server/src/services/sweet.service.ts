@@ -1,5 +1,11 @@
 import Sweet, { SweetDocument } from '../models/Sweet';
-import { CreateSweetInput, UpdateSweetInput, PurchaseInput, RestockInput, SearchInput } from '../dtos/sweet.dto';
+import {
+  CreateSweetInput,
+  UpdateSweetInput,
+  PurchaseInput,
+  RestockInput,
+  SearchInput
+} from '../dtos/sweet.dto';
 import { AppError } from '../utils/appError';
 import redis from '../config/redis';
 import { mongoose } from '../config/db';
@@ -36,7 +42,8 @@ const cachePrefix = 'sweets';
 const cacheKeyAll = `${cachePrefix}:all`;
 const cacheDurationSeconds = 60;
 
-const buildSearchKey = (query: SearchInput): string => `${cachePrefix}:search:${JSON.stringify(query)}`;
+const buildSearchKey = (query: SearchInput): string =>
+  `${cachePrefix}:search:${JSON.stringify(query)}`;
 
 const getCached = async (key: string): Promise<SweetResponse[] | null> => {
   const cached = await redis.get(key);
@@ -83,11 +90,11 @@ const searchSweets = async (query: SearchInput): Promise<SweetResponse[]> => {
   const atlasSearchIndex = 'sweet-search';
 
   const price: { $gte?: number; $lte?: number } = {};
- if (query.minPrice !== undefined) {
+  if (query.minPrice !== undefined) {
     const min = Number(query.minPrice);
     if (!isNaN(min)) price.$gte = min;
   }
-  
+
   if (query.maxPrice !== undefined) {
     const max = Number(query.maxPrice);
     if (!isNaN(max)) price.$lte = max;

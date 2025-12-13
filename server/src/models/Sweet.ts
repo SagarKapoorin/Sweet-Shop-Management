@@ -24,7 +24,10 @@ const sweetSchema = new Schema<SweetDocument, Model<SweetDocument>>(
   { timestamps: true }
 );
 
-sweetSchema.index({ name: 'text', category: 'text', description: 'text' }, { weights: { name: 5, category: 2, description: 1 } });
+sweetSchema.index(
+  { name: 'text', category: 'text', description: 'text' },
+  { weights: { name: 5, category: 2, description: 1 } }
+);
 
 const Sweet = model<SweetDocument>('Sweet', sweetSchema);
 

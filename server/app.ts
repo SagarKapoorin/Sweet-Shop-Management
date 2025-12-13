@@ -15,17 +15,17 @@ dotenv.config();
 const app = express();
 
 app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ limit:'10mb', extended: true }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(helmet());
 app.use(
   helmet.crossOriginResourcePolicy({
-    policy: 'cross-origin',
-  }),
+    policy: 'cross-origin'
+  })
 );
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,
-  }),
+    origin: process.env.FRONTEND_URL
+  })
 );
 app.use(hpp());
 app.use(rateLimiter);

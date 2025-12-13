@@ -1,6 +1,9 @@
 import { z } from 'zod';
 
-const priceNumber = z.coerce.number().min(0).refine((value) => !Number.isNaN(value));
+const priceNumber = z.coerce
+  .number()
+  .min(0)
+  .refine((value) => !Number.isNaN(value));
 
 export const createSweetSchema = z.object({
   name: z.string().min(1),
@@ -20,7 +23,9 @@ export const updateSweetSchema = z
     stock: z.coerce.number().int().min(0).optional(),
     description: z.string().min(1).optional()
   })
-  .refine((data) => Object.keys(data).length > 0, { message: 'At least one field must be provided' });
+  .refine((data) => Object.keys(data).length > 0, {
+    message: 'At least one field must be provided'
+  });
 
 export type UpdateSweetInput = z.infer<typeof updateSweetSchema>;
 
@@ -43,11 +48,14 @@ export const searchSchema = z
     minPrice: priceNumber.optional(),
     maxPrice: priceNumber.optional()
   })
-  .refine((value) => {
-    if (value.minPrice !== undefined && value.maxPrice !== undefined) {
-      return value.minPrice <= value.maxPrice;
-    }
-    return true;
-  }, { message: 'minPrice cannot exceed maxPrice' });
+  .refine(
+    (value) => {
+      if (value.minPrice !== undefined && value.maxPrice !== undefined) {
+        return value.minPrice <= value.maxPrice;
+      }
+      return true;
+    },
+    { message: 'minPrice cannot exceed maxPrice' }
+  );
 
 export type SearchInput = z.infer<typeof searchSchema>;

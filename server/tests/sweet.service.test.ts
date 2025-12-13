@@ -53,7 +53,12 @@ describe('sweet.service', () => {
   });
 
   it('filters sweets by search criteria', async () => {
-    await service.createSweet({ name: 'Gulab Jamun', category: 'Traditional', price: 10, stock: 5 });
+    await service.createSweet({
+      name: 'Gulab Jamun',
+      category: 'Traditional',
+      price: 10,
+      stock: 5
+    });
     await service.createSweet({ name: 'Chocolate Fudge', category: 'Modern', price: 15, stock: 5 });
     const results = await service.searchSweets({ category: 'Traditional' });
     expect(results.length).toBe(1);
@@ -61,7 +66,12 @@ describe('sweet.service', () => {
   });
 
   it('handles purchase transactions and stock checks', async () => {
-    const created = await service.createSweet({ name: 'Halwa', category: 'Traditional', price: 4, stock: 3 });
+    const created = await service.createSweet({
+      name: 'Halwa',
+      category: 'Traditional',
+      price: 4,
+      stock: 3
+    });
     const purchased = await service.purchaseSweet(created.id, { quantity: 2 });
     const updated = await Sweet.findById(created.id).exec();
     if (!updated) {
@@ -69,11 +79,18 @@ describe('sweet.service', () => {
     }
     expect(purchased.stock).toBe(1);
     expect(updated.stock).toBe(1);
-    await expect(service.purchaseSweet(created.id, { quantity: 5 })).rejects.toBeInstanceOf(AppError);
+    await expect(service.purchaseSweet(created.id, { quantity: 5 })).rejects.toBeInstanceOf(
+      AppError
+    );
   });
 
   it('restocks sweets for admins', async () => {
-    const created = await service.createSweet({ name: 'Sandesh', category: 'Traditional', price: 6, stock: 1 });
+    const created = await service.createSweet({
+      name: 'Sandesh',
+      category: 'Traditional',
+      price: 6,
+      stock: 1
+    });
     const restocked = await service.restockSweet(created.id, { quantity: 4 });
     expect(restocked.stock).toBe(5);
   });

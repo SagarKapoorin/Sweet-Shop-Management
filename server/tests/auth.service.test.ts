@@ -18,8 +18,8 @@ describe('auth.service', () => {
   });
 
   afterEach(async () => {
-    if (mongoose.connection.db){
-    await mongoose.connection.db.dropDatabase();
+    if (mongoose.connection.db) {
+      await mongoose.connection.db.dropDatabase();
     }
   });
 
@@ -29,7 +29,12 @@ describe('auth.service', () => {
   });
 
   it('registers a new user and hashes password', async () => {
-    const result = await register({ name: 'Alice', email: 'alice@example.com', password: 'password', role: 'user' });
+    const result = await register({
+      name: 'Alice',
+      email: 'alice@example.com',
+      password: 'password',
+      role: 'user'
+    });
     const saved = await User.findOne({ email: 'alice@example.com' }).exec();
     if (!saved) {
       throw new Error('User not persisted');
@@ -44,6 +49,8 @@ describe('auth.service', () => {
 
   it('throws on invalid login', async () => {
     await register({ name: 'Bob', email: 'bob@example.com', password: 'secret123', role: 'user' });
-    await expect(login({ email: 'bob@example.com', password: 'wrong' })).rejects.toBeInstanceOf(AppError);
+    await expect(login({ email: 'bob@example.com', password: 'wrong' })).rejects.toBeInstanceOf(
+      AppError
+    );
   });
 });

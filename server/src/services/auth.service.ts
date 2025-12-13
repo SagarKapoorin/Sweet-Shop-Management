@@ -29,7 +29,9 @@ const signToken = (user: UserDocument): string => {
     throw new AppError('JWT_SECRET is required', 500);
   }
   const expiresIn = (process.env.JWT_EXPIRES_IN ?? '1d') as jwt.SignOptions['expiresIn'];
-  return jwt.sign({ id: user._id.toString(), email: user.email, role: user.role }, secret, { expiresIn });
+  return jwt.sign({ id: user._id.toString(), email: user.email, role: user.role }, secret, {
+    expiresIn
+  });
 };
 
 const register = async (input: RegisterInput): Promise<AuthResponse> => {
