@@ -45,7 +45,30 @@ npm install
 
 Atlas Search:
 
-- Create an Atlas Search index named `sweet-search` on the `Sweet` collection. A simple dynamic index works, or define fields `name`, `category`, and `description` as string with the default analyzer to support the `/api/sweets/search` endpoint.
+- Create an Atlas Search index named `sweet-search` on the `sweets` collection. You can run this in the Atlas Data Explorer or `mongosh`:
+
+```javascript
+db['sweets'].runCommand({
+  createSearchIndexes: 'sweets',
+  indexes: [
+    {
+      name: 'sweet-search',
+      definition: {
+        mappings: {
+          dynamic: false,
+          fields: {
+            name: { type: 'string' },
+            category: { type: 'string' },
+            description: { type: 'string' },
+            price: { type: 'number' },
+            stock: { type: 'number' },
+          },
+        },
+      },
+    },
+  ],
+});
+```
 
 Mongo indexes:
 
@@ -83,6 +106,11 @@ This repo only contains the backend. To run a frontend locally:
 
 - Start the backend (steps above).
 - Configure the frontend to point to `http://localhost:<PORT>/api`.
+- Current client consumes:
+  - `GET /api/sweets` and `GET /api/sweets/search` for listing.
+  - `GET /api/sweets/:id` for detail modal data.
+  - `POST /api/sweets/:id/purchase` for the purchase flow.
+  - Admin: `POST /api/sweets`, `PUT /api/sweets/:id`, `DELETE /api/sweets/:id`, and `POST /api/sweets/:id/restock` for CRUD + restock.
 - Ensure `FRONTEND_URL` in `.env` matches the frontend origin so CORS passes.
 
 ## Key Features & Performance/Security Notes

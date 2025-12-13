@@ -1,73 +1,74 @@
-# React + TypeScript + Vite
+# Sweet Shop Frontend (React + Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Responsive React/TypeScript UI for browsing, purchasing, and administering sweets. Includes protected admin flows, detail modal with server-backed data, and inline stock management.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Vite + React 19 + TypeScript
+- Tailwind CSS for styling (via `@tailwindcss/vite`)
+- React Router 7
+- Axios client (`src/api/axios.ts`) pointing at `http://localhost:3000/api` by default
+- React Hot Toast for notifications
+- Testing: Vitest + React Testing Library + jsdom
 
-## React Compiler
+## AI Usage
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Used AI to bootstrap UI layout, detail modal, and restock flow, and to draft this README.
+- GitHub Copilot assisted with small completions (props, hooks).
+- All component logic, API wiring, and behaviors (purchase, admin CRUD/restock, detail fetch) were authored manually and reviewed; ~80% manual, ~20% assisted boilerplate/docs.
 
-## Expanding the ESLint configuration
+## Getting Started (Frontend)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Prerequisites:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Node.js 18+ and npm
+- Backend running at `http://localhost:3000/api` (adjust in `src/api/axios.ts` if different)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1) Install dependencies:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2) Run dev server:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+App serves at the Vite URL (default `http://localhost:5173`). Backend must be running for API calls.
+
+3) Build for production:
+
+```bash
+npm run build
+```
+
+4) Preview production build:
+
+```bash
+npm run preview
+```
+
+5) Lint / format / test:
+
+```bash
+npm run lint
+npm run format    # check
+npm run format:fix
+npm test
+```
+
+## Features & Flows
+
+- Public browse with search/filter (name, category, price range).
+- Sweet detail modal fetches `/sweets/:id` when a card is activated.
+- Purchase flow for authenticated users with quantity validation.
+- Admin: create/edit/delete sweets, restock via `/sweets/:id/restock`, add sweets from nav.
+- Auth context persists token/user in `localStorage`, provides logout and guards `/admin`.
+
+## Notes
+
+- API base URL: adjust `src/api/axios.ts` to point at your backend.
+- Tailwind styles rely on the Vite plugin (no `tailwind.config.js` needed in v4).
+- Tests run in jsdom; see `src/components/__tests__` for examples.
