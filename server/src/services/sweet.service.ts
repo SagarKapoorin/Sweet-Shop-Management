@@ -102,7 +102,13 @@ const searchSweets = async (query: SearchInput): Promise<SweetResponse[]> => {
 
   const compoundFilters: Record<string, unknown>[] = [];
   if (query.category) {
-    compoundFilters.push({ text: { query: query.category, path: 'category' } });
+    compoundFilters.push({
+      text: {
+        query: query.category,
+        path: 'category',
+        fuzzy: { maxEdits: 3, prefixLength: 0, maxExpansions: 50 }
+      }
+    });
   }
   if (price.$gte !== undefined || price.$lte !== undefined) {
     compoundFilters.push({
@@ -118,7 +124,13 @@ const searchSweets = async (query: SearchInput): Promise<SweetResponse[]> => {
 
   const mustClauses: Record<string, unknown>[] = [];
   if (query.name) {
-    mustClauses.push({ text: { query: query.name, path: ['name', 'category', 'description'] } });
+    mustClauses.push({
+      text: {
+        query: query.name,
+        path: ['name', 'category', 'description'],
+        fuzzy: { maxEdits: 3, prefixLength: 0, maxExpansions: 50 }
+      }
+    });
   } else {
     mustClauses.push({ exists: { path: 'name' } });
   }
