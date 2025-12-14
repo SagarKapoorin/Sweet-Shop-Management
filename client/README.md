@@ -7,7 +7,7 @@ Responsive React/TypeScript UI for browsing, purchasing, and administering sweet
 - Vite + React 19 + TypeScript
 - Tailwind CSS for styling (via `@tailwindcss/vite`)
 - React Router 7
-- Axios client (`src/api/axios.ts`) pointing at `http://localhost:3000/api` by default
+- Axios client (`src/api/axios.ts`) pointing at `VITE_API_BASE_URL` (defaults to `http://localhost:3000/api`)
 - React Hot Toast for notifications
 - Testing: Vitest + React Testing Library + jsdom
 
@@ -22,7 +22,7 @@ Responsive React/TypeScript UI for browsing, purchasing, and administering sweet
 Prerequisites:
 
 - Node.js 18+ and npm
-- Backend running at `http://localhost:3000/api` (adjust in `src/api/axios.ts` if different)
+- Backend running at the API base URL in your `.env` (defaults to `http://localhost:3000/api`)
 
 1) Install dependencies:
 
@@ -69,6 +69,6 @@ npm test
 
 ## Notes
 
-- API base URL: adjust `src/api/axios.ts` to point at your backend.
+- API base URL comes from `VITE_API_BASE_URL` in `.env` (fallback `http://localhost:3000/api`).
 - Tailwind styles rely on the Vite plugin (no `tailwind.config.js` needed in v4).
 - Tests run in jsdom; see `src/components/__tests__` for examples.
