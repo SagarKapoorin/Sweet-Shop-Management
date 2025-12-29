@@ -53,6 +53,18 @@ describe('sweet.service', () => {
     expect(finalList.length).toBe(2);
   });
 
+  it('gets sweet TotalPrice present', async() => {
+    const createdSweet= await service.createSweet({ name: 'Jalebi', category: 'Traditional', price: 10, stock: 5 });
+    const totalPrice= await service.getTotalPriceById(createdSweet._id);
+    expect(totalPrice).toBe(50); // 5 * 10
+  });
+  it('get sweet TotalPrice after stock is updated', async() => {
+    const createdSweet= await service.createSweet({ name: 'Rasgulla', category: 'Traditional', price: 8, stock: 4 });// 32, 16
+    await service.purchaseSweet(createdSweet._id, { quantity: 2 });
+    const totalPrice= await service.getTotalPriceById(createdSweet._id);
+    expect(totalPrice).toBe(16); // 2 * 8
+  });
+
   it('filters sweets by search criteria', async () => {
     await service.createSweet({
       name: 'Gulab Jamun',
@@ -82,21 +94,28 @@ describe('sweet.service', () => {
     expect(results[0]?.name).toBe('Gulab Jamun');
   });
 
+  it('get cart TotalPrice', async () => {
+    const sweet1 = await service.createSweet({ name: 'Kaju Katli', category: 'Traditional', price: 20, stock: 10 });
+    const updatedSweet = await service.purchaseSweet(sweet1._id, { quantity: 2 })
+    const cartTotal=updatedSweet.cartTotal;
+    expect(cartTotal).toBe(40);
+  });
+
   it('handles purchase transactions and stock checks', async () => {
     const created = await service.createSweet({
       name: 'Halwa',
       category: 'Traditional',
       price: 4,
-      stock: 3
+      stock: 3 
     });
-    const purchased = await service.purchaseSweet(created.id, { quantity: 2 });
-    const updated = await Sweet.findById(created.id).exec();
+    const purchased = await service.purchaseSweet(created._id, { quantity: 2 });
+    const updated = await Sweet.findById(created._id).exec();
     if (!updated) {
       throw new Error('Sweet not persisted');
     }
     expect(purchased.stock).toBe(1);
     expect(updated.stock).toBe(1);
-    await expect(service.purchaseSweet(created.id, { quantity: 5 })).rejects.toBeInstanceOf(
+    await expect(service.purchaseSweet(created._id, { quantity: 5 })).rejects.toBeInstanceOf(
       AppError
     );
   });
@@ -108,7 +127,7 @@ describe('sweet.service', () => {
       price: 6,
       stock: 1
     });
-    const restocked = await service.restockSweet(created.id, { quantity: 4 });
+    const restocked = await service.restockSweet(created._id, { quantity: 4 });
     expect(restocked.stock).toBe(5);
   });
 });
