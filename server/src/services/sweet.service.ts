@@ -11,13 +11,14 @@ import redis from '../config/redis';
 import { mongoose } from '../config/db';
 
 type SweetResponse = {
-  id: string;
+  _id: string;
   name: string;
   category: string;
   price: number;
   stock: number;
   description?: string;
 };
+type SweetWithCartTotal = SweetResponse & { cartTotal: number };
 
 type SweetFilter = Record<string, unknown>;
 type SweetAggregateResult = SweetFilter & {
@@ -29,13 +30,14 @@ type SweetAggregateResult = SweetFilter & {
   description?: string;
 };
 
-const toSweetResponse = (sweet: SweetDocument): SweetResponse => ({
-  id: sweet._id.toString(),
+const toSweetResponse = (sweet: SweetDocument, input?: PurchaseInput): SweetResponse | SweetWithCartTotal => ({
+  _id: sweet._id.toString(),
   name: sweet.name,
   category: sweet.category,
   price: sweet.price,
   stock: sweet.stock,
-  description: sweet.description
+  description: sweet.description,
+  cartTotal: input ? sweet.price * input.quantity : 0
 });
 
 const cachePrefix = 'sweets';
@@ -72,6 +74,13 @@ const createSweet = async (input: CreateSweetInput): Promise<SweetResponse> => {
   await invalidateCache();
   return toSweetResponse(sweet);
 };
+const getTotalPriceById = async (id: string): Promise<number> => {
+  const sweet = await Sweet.findById(id).exec();
+  if (!sweet) {
+    throw new AppError('Sweet not found', 404);
+  }
+  return sweet.price * sweet.stock;
+}
 
 const getSweets = async (): Promise<SweetResponse[]> => {
   const cached = await getCached(cacheKeyAll);
@@ -79,7 +88,7 @@ const getSweets = async (): Promise<SweetResponse[]> => {
     return cached;
   }
   const sweets = await Sweet.find().exec();
-  const mapped = sweets.map(toSweetResponse);
+  const mapped = sweets.map((sweet) => toSweetResponse(sweet));
   await cacheList(cacheKeyAll, mapped);
   return mapped;
 };
@@ -153,7 +162,7 @@ const searchSweets = async (query: SearchInput): Promise<SweetResponse[]> => {
   ]).exec();
   // console.log(sweets);
   const mapped = sweets.map((sweet) => ({
-    id: sweet._id.toString(),
+    _id: sweet._id.toString(),
     name: sweet.name,
     category: sweet.category,
     price: sweet.price,
@@ -194,9 +203,9 @@ const deleteSweet = async (id: string): Promise<void> => {
   await invalidateCache();
 };
 
-const purchaseSweet = async (id: string, input: PurchaseInput): Promise<SweetResponse> => {
+const purchaseSweet = async (id: string, input: PurchaseInput): Promise<SweetWithCartTotal> => {
   const session = await mongoose.startSession();
-  let updated: SweetDocument | null = null;
+  let updated: SweetResponse | null = null;
   try {
     //console.log(session start);
     await session.withTransaction(async () => {
@@ -209,7 +218,9 @@ const purchaseSweet = async (id: string, input: PurchaseInput): Promise<SweetRes
       }
       sweet.stock -= input.quantity;
       await sweet.save({ session });
-      updated = sweet;
+
+      updated = toSweetResponse(sweet);
+      // console.log('Sweet purchased:', updated);
     });
     //console.log(sweet purchased);
     //console.log('Transaction committed');
@@ -220,7 +231,7 @@ const purchaseSweet = async (id: string, input: PurchaseInput): Promise<SweetRes
     throw new AppError('Purchase failed', 500);
   }
   await invalidateCache();
-  return toSweetResponse(updated);
+  return toSweetResponse(updated, input) as SweetWithCartTotal;
 };
 
 const restockSweet = async (id: string, input: RestockInput): Promise<SweetResponse> => {
@@ -243,5 +254,6 @@ export {
   deleteSweet,
   purchaseSweet,
   restockSweet,
+  getTotalPriceById,
   SweetResponse
 };
